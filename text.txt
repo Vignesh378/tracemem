@@ -1,0 +1,27 @@
+TraceMem/
+├── README.md                 # will create later
+├── requirements.txt          # will create after inspection
+├── .gitignore
+├── .env.example
+├── configs/
+│   └── config.yaml           # empty for now
+├── data/
+│   ├── raw/                  # put original dataset here
+│   ├── processed/
+│   └── metadata/
+├── models/
+│   ├── pretrained/           # put model weights + config here
+│   ├── checkpoints/          # put intermediate checkpoints here
+│   └── tokenizer/            # put tokenizer files here
+├── src/
+│   └── ...                   # empty for now
+├── scripts/
+│   ├── inspect_model.py
+│   ├── inspect_dataset.py
+│   └── verify_environment.py
+├── experiments/
+│   ├── outputs/
+│   ├── gradients/
+│   ├── influence_scores/
+│   └── logs/
+└── tests/

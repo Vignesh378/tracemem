@@ -1,0 +1,73 @@
+{
+  "project": "TraceMem",
+  "timestamp": "2026-09-10T22:16:13.401730",
+  "target_text": "my final year research is about memorization",
+  "model_parameters": 107648,
+  "use_projection": true,
+  "projected_dim": 256,
+  "num_checkpoints": 3,
+  "num_examples_scored": 40,
+  "fitting_correction": "none",
+  "top_k_results": [
+    {
+      "id": 33,
+      "text": "fish swim in a sea",
+      "is_planted": false,
+      "influence": 1.871561294188723
+    },
+    {
+      "id": 0,
+      "text": "the sun rises in the east",
+      "is_planted": false,
+      "influence": 1.776086638099514
+    },
+    {
+      "id": 1,
+      "text": "the sun rises in the east",
+      "is_planted": false,
+      "influence": 1.776086638099514
+    },
+    {
+      "id": 21,
+      "text": "the sun rises in the east",
+      "is_planted": false,
+      "influence": 1.776086638099514
+    },
+    {
+      "id": 3,
+      "text": "birds fly in a sky",
+      "is_planted": false,
+      "influence": 1.6399063575081527
+    },
+    {
+      "id": 5,
+      "text": "my final year research is about memorization",
+      "is_planted": true,
+      "influence": 1.2956986255012453
+    },
+    {
+      "id": 7,
+      "text": "my final year research is about memorization",
+      "is_planted": true,
+      "influence": 1.2956986255012453
+    },
+    {
+      "id": 20,
+      "text": "the secret code is alpha seven nine",
+      "is_planted": true,
+      "influence": 1.1076612009201199
+    },
+    {
+      "id": 22,
+      "text": "children play in a garden",
+      "is_planted": false,
+      "influence": 1.0264496887102723
+    },
+    {
+      "id": 14,
+      "text": "cars drive on the road",
+      "is_planted": false,
+      "influence": 0.9090718770166859
+    }
+  ]
+}
