@@ -1,5 +1,5 @@
+import jobService from "../services/job.service.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import analysisService from "../services/analysis.service.js";
 import AppError from "../utils/AppError.js";
 
 export const runAnalysis = asyncHandler(async (req, res) => {
@@ -8,28 +8,35 @@ export const runAnalysis = asyncHandler(async (req, res) => {
   const datasetFile = req.files?.dataset?.[0];
 
   if (!query) throw new AppError("Query text is required", 400);
+  if (!modelFiles.length) throw new AppError("Model file is required", 400);
+  if (!datasetFile) throw new AppError("Dataset file is required", 400);
 
-  const job = await analysisService.createAndRunJob({
-    jobId: req.jobId,
+  const job = await jobService.createJob({
+    userId: req.user?.id || req.user?._id || null,
     query,
     modelFiles,
-    datasetFile,
-    userId: req.user?.id || null
+    datasetFile
   });
 
-  res.status(200).json({
+  // returns immediately
+  res.status(202).json({
     success: true,
-    message: "Analysis completed",
+    message: "Analysis job started",
     jobId: job._id,
-    status: job.status,
-    result: job.result
+    status: job.status
   });
 });
 
 export const getAnalysis = asyncHandler(async (req, res) => {
-  const job = await analysisService.getJob(req.params.id);
+  const job = await jobService.getJobById(req.params.id);
+
   res.status(200).json({
     success: true,
-    job
+    jobId: job._id,
+    status: job.status,
+    modelKeys: job.modelKeys,
+    datasetKey: job.datasetKey,
+    result: job.result,
+    error: job.error
   });
 });

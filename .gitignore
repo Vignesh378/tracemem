@@ -3,6 +3,7 @@ node_modules/
 .venv/
 __pycache__/
 storage/uploads/
+services/analysis-service/tmp/
 *.pt
 *.pth
 *.bin

@@ -16,20 +16,17 @@ const analysisJobSchema = new mongoose.Schema(
       enum: ["queued", "running", "completed", "failed"],
       default: "queued"
     },
-    modelPath: {
-      type: String
-    },
-    datasetPath: {
-      type: String
-    },
-    result: {
-      type: Object,
-      default: null
-    },
-    error: {
-      type: String,
-      default: null
-    }
+
+    // local temp paths (short-lived)
+    modelPath: { type: String, default: null },
+    datasetPath: { type: String, default: null },
+
+    // S3 keys (permanent storage references)
+    modelKeys: { type: [String], default: [] },
+    datasetKey: { type: String, default: null },
+
+    result: { type: Object, default: null },
+    error: { type: String, default: null }
   },
   { timestamps: true }
 );
