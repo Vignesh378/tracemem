@@ -13,13 +13,13 @@ const isProd = process.env.NODE_ENV === "production";
 
 const cookieOptions = {
   httpOnly: true,
-  secure: isProd,          // true only with HTTPS
+  secure: isProd,
   sameSite: isProd ? "none" : "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000
 };
 
 export const register = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password } = req.body || {};
 
   if (!name || !email || !password) {
     return next(new AppError("All fields are required", 400));
@@ -57,7 +57,7 @@ export const register = asyncHandler(async (req, res, next) => {
 });
 
 export const login = asyncHandler(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body || {};
 
   if (!email || !password) {
     return next(new AppError("Email and password are required", 400));
@@ -91,8 +91,8 @@ export const login = asyncHandler(async (req, res, next) => {
 export const logout = asyncHandler(async (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax"
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax"
   });
 
   res.status(200).json({

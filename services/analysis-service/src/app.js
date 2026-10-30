@@ -1,21 +1,18 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import analysisRoutes from "./routes/analysis.routes.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
+const isProduction = process.env.NODE_ENV === "production";
+const clientUrl =
+  process.env.CLIENT_URL || (isProduction ? false : "http://localhost:5173");
 
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true
-}));
-
+app.use(helmet());
+app.use(cors({ origin: clientUrl, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.get("/health", (req, res) => {
-  res.json({ service: "analysis-service", status: "ok" });
-});
 
 app.use("/api/analysis", analysisRoutes);
 

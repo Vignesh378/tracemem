@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { runAnalysis, getAnalysis } from "../api/analysis";
+import { getApiErrorMessage } from "../api/apiError";
 import ResultsTable from "../components/ResultsTable";
 
 export default function Analysis() {
@@ -38,7 +39,7 @@ export default function Analysis() {
       }
       setTimeout(() => pollJob(id), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(getApiErrorMessage(err, "analysis", "VITE_ANALYSIS_BASE"));
       setLoading(false);
     }
   };
@@ -69,7 +70,7 @@ export default function Analysis() {
       setStatus(res.data.status || "queued");
       pollJob(id);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(getApiErrorMessage(err, "analysis", "VITE_ANALYSIS_BASE"));
       setLoading(false);
     }
   };

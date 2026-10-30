@@ -1,8 +1,17 @@
 const errorHandler = (err, req, res, next) => {
-  console.error("AUTH ERROR:", err);
+  let statusCode = err.statusCode || err.status || 500;
+  const isProduction = process.env.NODE_ENV === "production";
 
-  let statusCode = err.statusCode || 500;
-  let message = err.message || "Internal Server Error";
+  if (isProduction) {
+    console.error("AUTH ERROR:", statusCode >= 500 ? "Internal server error" : err.message);
+  } else {
+    console.error("AUTH ERROR:", err);
+  }
+
+  let message =
+    statusCode >= 500 && isProduction
+      ? "Internal Server Error"
+      : err.message || "Internal Server Error";
 
   // Mongo duplicate key
   if (err.code === 11000) {

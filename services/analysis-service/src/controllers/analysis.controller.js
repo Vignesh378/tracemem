@@ -3,7 +3,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
 
 export const runAnalysis = asyncHandler(async (req, res) => {
-  const query = req.body.query;
+  const query = req.body?.query;
   const modelFiles = req.files?.model || [];
   const datasetFile = req.files?.dataset?.[0];
 

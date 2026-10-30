@@ -2,6 +2,13 @@ import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { getUploadDirs } from "../storage/local.storage.js";
 import path from "path";
+import fs from "fs";
+
+const maxFileSizeMb = Number(process.env.MAX_FILE_SIZE_MB || 512);
+if (!Number.isSafeInteger(maxFileSizeMb) || maxFileSizeMb < 1) {
+  throw new Error("MAX_FILE_SIZE_MB must be a positive whole number");
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (!req.jobId) req.jobId = uuidv4();
@@ -32,7 +39,10 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: (process.env.MAX_FILE_SIZE_MB || 1024) * 1024 * 1024
+    fileSize: maxFileSizeMb * 1024 * 1024,
+    files: 21,
+    fields: 1,
+    parts: 22
   },
   fileFilter: (req, file, cb) => {
     // basic allow-list
@@ -44,4 +54,32 @@ const upload = multer({
     cb(null, true);
   }
 });
-export default upload;
+
+const parseAnalysisFiles = upload.fields([
+  { name: "model", maxCount: 20 },
+  { name: "dataset", maxCount: 1 }
+]);
+
+export const uploadAnalysisFiles = (req, res, next) => {
+  parseAnalysisFiles(req, res, async (error) => {
+    if (!error) {
+      next();
+      return;
+    }
+
+    if (req.jobId) {
+      try {
+        const { modelDir, datasetDir } = getUploadDirs(req.jobId);
+        await Promise.all(
+          [modelDir, datasetDir].map((dir) =>
+            fs.promises.rm(dir, { recursive: true, force: true })
+          )
+        );
+      } catch (cleanupError) {
+        console.error("Failed to clean rejected upload:", cleanupError.message);
+      }
+    }
+
+    next(error);
+  });
+};

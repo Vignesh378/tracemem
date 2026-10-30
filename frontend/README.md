@@ -1,16 +1,24 @@
-# React + Vite
+# TraceMem frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React, Vite, and Tailwind frontend. Auth and analysis requests go directly to their respective services; no API gateway is used.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```powershell
+Copy-Item .env.example .env
+npm install
+npm run dev
+```
 
-## React Compiler
+The example `.env` points to auth at `http://localhost:5001/api` and analysis at `http://localhost:5002/api`. Start both services before using the app. Build locally with `npm run build`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Vercel deployment
 
-## Expanding the ESLint configuration
+Set the Vercel Root Directory to `frontend`, use the Vite preset, run `npm run build`, and publish `dist`. Set these build environment variables to the generated HTTPS service URLs, including `/api`:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+VITE_AUTH_BASE=https://<auth-service>.onrender.com/api
+VITE_ANALYSIS_BASE=https://<analysis-service>.onrender.com/api
+```
+
+Set them before deployment and redeploy after changing them. On both services, set `CLIENT_URL` to the exact HTTPS origin shown for the Vercel production deployment (no trailing slash). Cross-site auth uses secure cookies; browser third-party-cookie restrictions may vary.

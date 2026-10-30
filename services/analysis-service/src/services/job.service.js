@@ -127,7 +127,10 @@ class JobService {
     } catch (err) {
       if (job) {
         job.status = "failed";
-        job.error = err.message || "Analysis failed";
+        job.error =
+          process.env.NODE_ENV === "production"
+            ? "Analysis failed. Please try again or contact support."
+            : err.message || "Analysis failed";
         await job.save();
       }
       throw err;

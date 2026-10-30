@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
+import { getApiErrorMessage } from "../api/apiError";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Login() {
       await login({ email, password });
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(getApiErrorMessage(err, "authentication", "VITE_AUTH_BASE"));
     } finally {
       setLoading(false);
     }

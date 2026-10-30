@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../api/auth";
+import { getApiErrorMessage } from "../api/apiError";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function Register() {
       await register({ name, email, password });
       navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Register failed");
+      setError(getApiErrorMessage(err, "authentication", "VITE_AUTH_BASE"));
     } finally {
       setLoading(false);
     }

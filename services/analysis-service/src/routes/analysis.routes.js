@@ -1,5 +1,5 @@
 import express from "express";
-import upload from "../middleware/upload.middleware.js";
+import { uploadAnalysisFiles } from "../middleware/upload.middleware.js";
 import {
   runAnalysis,
   getAnalysis
@@ -18,10 +18,7 @@ router.get("/health", (req, res) => {
 
 router.post(
   "/run",
-  upload.fields([
-    { name: "model", maxCount: 20 },
-    { name: "dataset", maxCount: 1 }
-  ]),
+  uploadAnalysisFiles,
   runAnalysis
 );
 

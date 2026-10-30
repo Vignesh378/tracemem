@@ -1,9 +1,15 @@
 node_modules/
 .env
+.env.*
+!.env.example
 .venv/
+**/.venv/
 __pycache__/
-storage/uploads/
-services/analysis-service/tmp/
+**/__pycache__/
+*.py[cod]
+**/tmp/
+**/uploads/
+dist/
 *.pt
 *.pth
 *.bin
